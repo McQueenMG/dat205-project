@@ -3,7 +3,6 @@
 extern "C" _declspec(dllexport) unsigned int NvOptimusEnablement = 0x00000001;
 #endif
 
-#include <GL/glew.h>
 #include <cmath>
 #include <cstdlib>
 #include <algorithm>
@@ -85,19 +84,19 @@ mat4 iceCreamCarModelMatrix;
 
 void loadShaders(bool is_reload)
 {
-	GLuint shader = labhelper::loadShaderProgram("../project/simple.vert", "../project/simple.frag", is_reload);
+	GLuint shader = labhelper::loadShaderProgram("../project/glsl_shaders/simple.vert", "../project/glsl_shaders/simple.frag", is_reload);
 	if(shader != 0)
 	{
 		simpleShaderProgram = shader;
 	}
 
-	shader = labhelper::loadShaderProgram("../project/background.vert", "../project/background.frag", is_reload);
+	shader = labhelper::loadShaderProgram("../project/glsl_shaders/background.vert", "../project/glsl_shaders/background.frag", is_reload);
 	if(shader != 0)
 	{
 		backgroundProgram = shader;
 	}
 
-	shader = labhelper::loadShaderProgram("../project/shading.vert", "../project/shading.frag", is_reload);
+	shader = labhelper::loadShaderProgram("../project/glsl_shaders/shading.vert", "../project/glsl_shaders/shading.frag", is_reload);
 	if(shader != 0)
 	{
 		shaderProgram = shader;
