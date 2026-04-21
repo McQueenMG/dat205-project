@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <vulkan/vulkan.h>
 #include <vector>
+#include <optional>
 
 namespace vk
 {
@@ -12,6 +13,15 @@ namespace vk
         VkDebugUtilsMessageSeverityFlagBitsEXT minLogSeverity =
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
     };
+    struct QueueFamilyIndices {
+        std::optional<uint32_t> graphicsFamily;
+        std::optional<uint32_t> presentFamily;
+
+        bool isComplete() {
+            return graphicsFamily.has_value() && presentFamily.has_value();
+        }
+    };
+
 
     class Context
     {
@@ -21,6 +31,9 @@ namespace vk
 
         VkInstance getInstance() const { return instance; }
         VkSurfaceKHR getSurface() const { return surface; }
+        VkDevice getDevice() const { return device; }
+        VkQueue getGraphicsQueue() const { return graphicsQueue; }
+        VkQueue getPresentQueue() const { return presentQueue; }
 
     private:
         SDL_Window *window = nullptr;
@@ -28,6 +41,9 @@ namespace vk
         VkSurfaceKHR surface = VK_NULL_HANDLE;
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
         VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
+        VkDevice device = VK_NULL_HANDLE;
+        VkQueue graphicsQueue;
+        VkQueue presentQueue;
 
         bool enableValidationLayers = false;
         VkDebugUtilsMessageSeverityFlagBitsEXT minLogSeverity =
@@ -53,5 +69,7 @@ namespace vk
         void setupDebugMessenger();
         void destroyDebugMessenger();
         bool isDeviceSuitable(VkPhysicalDevice device);
+        void createLogicalDevice();
+        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
     };
 }

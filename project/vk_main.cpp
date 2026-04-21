@@ -74,13 +74,13 @@ int main(int argc, char **argv)
 
         scene.shutdown();
         renderer.shutdown(context);
+        context.shutdown();
+
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << "\n";
     }
-
-    context.shutdown();
 
     SDL_DestroyWindow(window);
     SDL_Quit();
