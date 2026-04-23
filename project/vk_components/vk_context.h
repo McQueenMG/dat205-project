@@ -21,20 +21,28 @@ namespace vk
             return graphicsFamily.has_value() && presentFamily.has_value();
         }
     };
+    struct SwapchainSupportDetails {
+        VkSurfaceCapabilitiesKHR capabilities;
+        std::vector<VkSurfaceFormatKHR> formats;
+        std::vector<VkPresentModeKHR> presentModes;
+    };
 
 
     class Context
     {
-    public:
+        public:
         void initialize(SDL_Window *window, const ContextCreateInfo &info = {});
         void shutdown();
-
+        
         VkInstance getInstance() const { return instance; }
         VkSurfaceKHR getSurface() const { return surface; }
         VkDevice getDevice() const { return device; }
         VkQueue getGraphicsQueue() const { return graphicsQueue; }
         VkQueue getPresentQueue() const { return presentQueue; }
-
+        VkExtent2D getDrawableExtent() const;
+        VkPhysicalDevice getPhysicalDevice() const { return physicalDevice; }
+        SwapchainSupportDetails querySwapchainSupport(VkPhysicalDevice device) const;
+        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) const;
     private:
         SDL_Window *window = nullptr;
         VkInstance instance = VK_NULL_HANDLE;
@@ -44,12 +52,12 @@ namespace vk
         VkDevice device = VK_NULL_HANDLE;
         VkQueue graphicsQueue;
         VkQueue presentQueue;
-
         bool enableValidationLayers = false;
         VkDebugUtilsMessageSeverityFlagBitsEXT minLogSeverity =
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
 
         static const std::vector<const char *> validationLayers;
+        static const std::vector<const char *> deviceExtensions;
 
         bool checkValidationLayerSupport() const;
         std::vector<const char *> getRequiredExtensions() const;
@@ -62,7 +70,7 @@ namespace vk
             VkDebugUtilsMessageTypeFlagsEXT messageType,
             const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
             void *pUserData);
-
+        
         void createInstance();
         void createSurface();
         void pickPhysicalDevice();
@@ -70,6 +78,6 @@ namespace vk
         void destroyDebugMessenger();
         bool isDeviceSuitable(VkPhysicalDevice device);
         void createLogicalDevice();
-        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+        bool checkDeviceExtensionSupport(VkPhysicalDevice device);
     };
 }

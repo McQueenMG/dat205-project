@@ -12,8 +12,8 @@ extern "C" __declspec(dllexport) unsigned int NvOptimusEnablement = 0x00000001;
 #include "vk_components/vk_renderer.h"
 #include "vk_components/scene.h"
 
-const uint32_t windowWidth = 1280;
-const uint32_t windowHeight = 720;
+const uint32_t windowWidth = 1920;
+const uint32_t windowHeight = 1024;
 
 int main(int argc, char **argv)
 {
