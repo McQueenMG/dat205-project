@@ -40,7 +40,7 @@ float currentTime = 0.0f;
 float previousTime = 0.0f;
 float deltaTime = 0.0f;
 
-bool handleEvents(vk::Scene &scene)
+bool handleEvents(vk::Scene &scene, float deltaTime)
 {
 	// check events (keyboard among other)
 	SDL_Event event;
@@ -70,7 +70,6 @@ bool handleEvents(vk::Scene &scene)
 
 		if(event.type == SDL_MOUSEMOTION && g_isMouseDragging)
 		{
-			// More info at https://wiki.libsdl.org/SDL_MouseMotionEvent
 			int delta_x = event.motion.x - g_prevMouseCoords.x;
 			int delta_y = event.motion.y - g_prevMouseCoords.y;
 			float rotationSpeed = 0.1f;
@@ -159,12 +158,7 @@ int main(int argc, char **argv)
         scene.initialize();
 
         bool stopRunning = false;
-        float currentTime = 0.f;
-        float previousTime = 0.f;
-        float deltaTime = 0.f;
         bool stopRendering = false;
-        int currentWidth = windowWidth;
-        int currentHeight = windowHeight;
 	    auto startTime = std::chrono::system_clock::now();
 
         while (!stopRunning)
@@ -174,9 +168,8 @@ int main(int argc, char **argv)
             currentTime = timeSinceStart.count();
             deltaTime = currentTime - previousTime;
 
-            stopRunning = handleEvents(scene);
-            SDL_GetWindowSize(window, &currentWidth, &currentHeight);
-            scene.update(currentTime, currentWidth, currentHeight);
+            stopRunning = handleEvents(scene, deltaTime);
+            scene.update(currentTime, context.getDrawableExtent().width, context.getDrawableExtent().height);
             renderer.render(scene);
             SDL_Delay(1);
         }

@@ -14,7 +14,7 @@ namespace vk
         lightColor = glm::vec3(1.f);
         lightIntensity = 10000.f;
         environmentMultiplier = 1.5f;
-        cameraSpeed = 50.0f;
+        cameraSpeed = 10.0f;
 
         fighterModelMatrix = glm::translate(glm::vec3(0.f, 15.f, 0.f));
         landingPadModelMatrix = glm::mat4(1.f);

@@ -71,6 +71,8 @@ add_executable(project_vk
     vk_components/vk_swapchain.cpp
     vk_components/vk_pipeline.h
     vk_components/vk_pipeline.cpp
+    vk_components/vk_model.h
+    vk_components/vk_model.cpp
     vk_components/scene.h
     vk_components/scene.cpp
     vk_components/pipelines/background_pipeline.h
